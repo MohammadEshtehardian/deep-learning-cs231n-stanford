@@ -55,7 +55,10 @@ class TwoLayerNet(object):
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        self.params['W1'] = np.random.normal(0, weight_scale, (hidden_dim, input_dim))
+        self.params['b1'] = np.zeros((hidden_dim, ))
+        self.params['W2'] = np.random.normal(0, weight_scale, (num_classes, hidden_dim))
+        self.params['b2'] = np.zeros((num_classes, ))
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
@@ -88,7 +91,8 @@ class TwoLayerNet(object):
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        hidden_layer_scores, cache_input = affine_relu_forward(X, self.params['W1'], self.params['b1'])
+        scores, cache_hidden = affine_forward(hidden_layer_scores, self.params['W2'], self.params['b2'])
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
