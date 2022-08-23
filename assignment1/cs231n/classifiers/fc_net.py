@@ -55,9 +55,9 @@ class TwoLayerNet(object):
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        self.params['W1'] = np.random.normal(0, weight_scale, (hidden_dim, input_dim))
+        self.params['W1'] = np.random.normal(0, weight_scale, (input_dim, hidden_dim))
         self.params['b1'] = np.zeros((hidden_dim, ))
-        self.params['W2'] = np.random.normal(0, weight_scale, (num_classes, hidden_dim))
+        self.params['W2'] = np.random.normal(0, weight_scale, (hidden_dim, num_classes))
         self.params['b2'] = np.zeros((num_classes, ))
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -116,7 +116,12 @@ class TwoLayerNet(object):
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        loss, dout = softmax_loss(scores, y)
+        loss += 0.5 * self.reg * (np.sum(self.params['W1']**2) + np.sum(self.params['W2']**2))
+        dy, grads['W2'], grads['b2'] = affine_backward(dout, cache_hidden)
+        dx, grads['W1'], grads['b1'] = affine_relu_backward(dy, cache_input)
+        grads['W1'] += self.reg * self.params['W1']
+        grads['W2'] += self.reg * self.params['W2']
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
